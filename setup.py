@@ -21,8 +21,8 @@ setup(
 
     version='0.0.1',
 
-    description='',
-    url='',
+    description='A small set of tools to make using Docker with the Invoke task runner easier. Also incorporates a Flow system for use with git-flow.',
+    url='https://github.com/VJftw/invoke-docker-flow',
     author='VJ Patel',
     author_email='vj@vjpatel.me',
     license='MIT',

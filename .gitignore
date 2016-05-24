@@ -6,3 +6,7 @@ coverage
 .idea
 
 *.egg-info
+
+dist
+
+build
