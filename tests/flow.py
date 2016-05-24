@@ -6,7 +6,13 @@
 import unittest
 import mock
 
-from InvokeDockerFlow.flow import Flow
+import sys
+print(sys.modules)
+
+# sys.modules['InvokeDockerFlow.utils'] = mock.Mock(return_value=)
+
+
+from invoke_docker_flow.flow import Flow
 
 
 class FlowTests(unittest.TestCase):
@@ -17,4 +23,9 @@ class FlowTests(unittest.TestCase):
     def setUp(self):
         """
         """
-        self.flow = Flow()
+        self.flow = Flow(
+            "vjftw/invoke-docker-flow"
+        )
+
+    def test_get_development_container_name(self):
+        pass

@@ -1,15 +1,38 @@
+
+"""A setuptools based setup module.
+See:
+https://packaging.python.org/en/latest/distributing.html
+https://github.com/pypa/sampleproject
+"""
+# Always prefer setuptools over distutils
+from setuptools import setup, find_packages
+# To use a consistent encoding
+from codecs import open
+from os import path
+
+here = path.abspath(path.dirname(__file__))
+
+# Get the long description from the README file
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(
     name='invoke-docker-flow',
 
     version='0.0.1',
 
     description='',
-    long_description='',
     url='',
     author='VJ Patel',
     author_email='vj@vjpatel.me',
     license='MIT',
+    zip_safe=False,
 
+    packages=['idflow'],
+    install_requires=['docker-py', 'invoke', 'psutil', 'py-cpuinfo'],
+    extras_require={
+    'test': ['nose', 'coverage', 'rednose']
+    },
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -26,6 +49,5 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
 
-    keywords='invoke docker flow',
-    
+    keywords='invoke docker flow'
 )

@@ -2,7 +2,7 @@
 """
 # coding=utf-8
 
-from InvokeDockerFlow.utils import Utils
+from .utils import Utils
 
 
 class Flow:
@@ -22,12 +22,12 @@ class Flow:
         if branch:
             self.__branch = branch
         else:
-            self.__branch = Utils.getBranch()
+            self.__branch = Utils.get_branch()
 
         if version:
             self.__version = version
         else:
-            self.__version = Utils.getVersion()
+            self.__version = Utils.get_version()
 
     def get_development_container_name(self):
         """
