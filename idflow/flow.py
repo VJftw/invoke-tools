@@ -29,6 +29,26 @@ class Flow:
         else:
             self.__version = Utils.get_version()
 
+    def get_repository(self):
+        """
+        """
+        return self.__repository
+
+    def get_prefix(self):
+        """
+        """
+        return self.__prefix
+
+    def get_branch(self):
+        """
+        """
+        return self.__branch
+
+    def get_version(self):
+        """
+        """
+        return self.__version
+
     def get_development_container_name(self):
         """
         """
@@ -60,7 +80,7 @@ class Flow:
         """
         return "{0}:{1}".format(
             self.__repository,
-            self.__build_container_tag)
+            self.get_build_container_tag())
 
     def get_branch_container_tag(self):
         """
@@ -77,4 +97,4 @@ class Flow:
         """
         return "{0}:{1}".format(
             self.__repository,
-            self.__branch_container_tag)
+            self.get_branch_container_tag())
