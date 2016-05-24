@@ -1,4 +1,5 @@
 """
+idflow.Flow
 """
 # coding=utf-8
 
@@ -7,6 +8,7 @@ from .utils import Utils
 
 class Flow:
     """
+    Flow
     """
 
     def __init__(
@@ -16,6 +18,7 @@ class Flow:
             branch=None,
             version=None):
         """
+        Starts a new Flow instance for a Project
         """
         self.__repository = repository
         self.__prefix = prefix
@@ -31,26 +34,31 @@ class Flow:
 
     def get_repository(self):
         """
+        Returns the repository
         """
         return self.__repository
 
     def get_prefix(self):
         """
+        Returns the prefix
         """
         return self.__prefix
 
     def get_branch(self):
         """
+        Returns the branch
         """
         return self.__branch
 
     def get_version(self):
         """
+        Returns the version
         """
         return self.__version
 
     def get_development_container_name(self):
         """
+        Returns the development container name
         """
         if self.__prefix:
             return "{0}:{1}-{2}-dev".format(
@@ -64,6 +72,7 @@ class Flow:
 
     def get_build_container_tag(self):
         """
+        Return the build container tag
         """
         if self.__prefix:
             return "{0}-{1}-{2}".format(
@@ -77,6 +86,7 @@ class Flow:
 
     def get_build_container_name(self):
         """
+        Returns the build container name
         """
         return "{0}:{1}".format(
             self.__repository,
@@ -84,6 +94,7 @@ class Flow:
 
     def get_branch_container_tag(self):
         """
+        Returns the branch container tag
         """
         if self.__prefix:
             return "{0}-{1}".format(
@@ -94,6 +105,7 @@ class Flow:
 
     def get_branch_container_name(self):
         """
+        Returns the branch container name
         """
         return "{0}:{1}".format(
             self.__repository,

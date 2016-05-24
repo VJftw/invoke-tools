@@ -1,4 +1,5 @@
 """
+Flow tests
 """
 # coding=utf-8
 
@@ -11,7 +12,6 @@ utils_mock = mock.Mock()
 utils_mock.Utils.get_branch.return_value = "master"
 utils_mock.Utils.get_version.return_value = "1.0.0"
 sys.modules['idflow.utils'] = utils_mock
-
 
 from idflow import Flow
 
