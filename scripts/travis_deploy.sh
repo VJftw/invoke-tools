@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] && ["$TRAVIS_PYTHON_VERSION" = "3.5"]; then
+if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_PYTHON_VERSION" = "3.5" ]; then
     echo ""
     echo "==="
     echo "Deploying to PyPI"
