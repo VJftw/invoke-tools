@@ -8,11 +8,6 @@ if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     echo ""
 
     echo ""
-    echo "Setting version environment"
-    echo ""
-    export BUILD_VERSION=$(git tag | tail -n 1)
-
-    echo ""
     echo "Building source and wheel distribution"
     echo ""
     python setup.py sdist bdist_wheel
