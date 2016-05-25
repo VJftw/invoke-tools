@@ -17,8 +17,8 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-version = check_output('git tag'.split(' ')).decode('utf-8').split(
-    '\n')[-1].strip()
+version = check_output('git tag'.split(' ')).decode(
+    'utf-8').splitlines()[-1].strip()
 print(version)
 
 setup(
