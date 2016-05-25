@@ -1,8 +1,11 @@
 """
+idflow.Docker
 """
+from __future__ import print_function
 import os
 import json
 import getpass
+
 
 class Docker:
 
@@ -23,6 +26,7 @@ class Docker:
 
         if "stream" in line:
             print("    {0}".format(line["stream"]), end="", flush=True)
+            pass
         elif "status" in line:
             o = line["status"]
             if "progress" in line:
