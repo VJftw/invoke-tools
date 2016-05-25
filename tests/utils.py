@@ -80,7 +80,7 @@ class UtilsTest(unittest.TestCase):
                 "tag-version"
             )
 
-    def test_get_version_with_tags(self):
+    def test_get_version_with_short_commit(self):
         """
         Utils: Should return the version using the short commit
         """
