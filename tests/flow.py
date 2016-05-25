@@ -5,14 +5,6 @@ Flow tests
 
 import unittest
 import mock
-import os
-
-# import sys
-#
-# utils_mock = mock.Mock()
-# utils_mock.Utils.get_branch.return_value = "master"
-# utils_mock.Utils.get_version.return_value = "1.0.0"
-# sys.modules['idflow.utils'] = utils_mock
 
 from idflow import Flow
 
@@ -22,13 +14,8 @@ class FlowTests(unittest.TestCase):
     Tests for Flow
     """
 
-    def setUp(self):
-        self.os_environ = os.environ.copy()
-
-    def tearDown(self):
-        os.environ = self.os_environ
-
-    def __se_check_output(self, cmds):
+    @staticmethod
+    def __se_check_output(cmds):
         if cmds == "git describe --tags".split(" "):
             return "1.0.0".encode('utf-8')
         elif cmds == "git rev-parse --short HEAD".split(" "):
@@ -60,7 +47,7 @@ class FlowTests(unittest.TestCase):
         Flow: Should return the development container name
         """
         with mock.patch('idflow.utils.check_output',
-                        side_effect=self.__se_check_output):
+                        side_effect=FlowTests.__se_check_output):
             flow = Flow(
                 "vjftw/invoke-docker-flow"
             )
@@ -82,7 +69,7 @@ class FlowTests(unittest.TestCase):
         Flow: Should return the build container name
         """
         with mock.patch('idflow.utils.check_output',
-                        side_effect=self.__se_check_output):
+                        side_effect=FlowTests.__se_check_output):
             flow = Flow(
                 "vjftw/invoke-docker-flow"
             )
@@ -105,7 +92,7 @@ class FlowTests(unittest.TestCase):
         Flow: Should return the build container tag
         """
         with mock.patch('idflow.utils.check_output',
-                        side_effect=self.__se_check_output):
+                        side_effect=FlowTests.__se_check_output):
             flow = Flow(
                 "vjftw/invoke-docker-flow"
             )
@@ -128,7 +115,7 @@ class FlowTests(unittest.TestCase):
         Flow: Should return the branch container name
         """
         with mock.patch('idflow.utils.check_output',
-                        side_effect=self.__se_check_output):
+                        side_effect=FlowTests.__se_check_output):
             flow = Flow(
                 "vjftw/invoke-docker-flow"
             )
@@ -151,7 +138,7 @@ class FlowTests(unittest.TestCase):
         Flow: Should return the branch container tag
         """
         with mock.patch('idflow.utils.check_output',
-                        side_effect=self.__se_check_output):
+                        side_effect=FlowTests.__se_check_output):
             flow = Flow(
                 "vjftw/invoke-docker-flow"
             )
