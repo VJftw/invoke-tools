@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
+if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ] && ["$TRAVIS_PYTHON_VERSION" == '3.5']; then
     echo ""
     echo "==="
     echo "Deploying to PyPI"
@@ -15,5 +15,5 @@ if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     echo ""
     echo "Uploading with Twine"
     echo ""
-    twine --username $PYPI_USERNAME --password $PYPI_PASSWORD upload dist/*
+    twine upload --username $PYPI_USERNAME --password $PYPI_PASSWORD dist/*
 fi
