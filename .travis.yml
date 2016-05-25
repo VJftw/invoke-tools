@@ -10,7 +10,10 @@ install:
 script:
 - ./scripts/run_tests.sh
 after_success:
-- ./srcipts/travis_deploy.sh
+- ./scripts/travis_deploy.sh
+branches:
+  except:
+    - /^v[0-9]/
 env:
   global:
   - secure: Lm+Z5fdILpn6IQX/NeVLTFoHjFTg5zdNU2ki7ACoqxlLcOmIeaESo4WvvfCmSqJq7XhwHPIDvv3aznuveULaknK7Y1XinDBdBikgWKyNrPv7AjS3ltxo8VOhl8mkWRPZPU0ZXFuFZeYglkD3eudN93aZF3ddDqKLCjhGd52dzsbkBIEVlResGjHp1rfbEKxAb3qX34j1TYMfCdzlt0FUifEiaoKL91YrRxq0PfYfNEvEBSSm2EkCJCUleaIDB2SFiBHoj6dCPwRUxmXFliHyH3YsCuGxBhGJT+ATNh+FNmUd6H3uL9w69D5LppiEGdCy5yvF+SfgKFiAUOOvrG2RJAQ+aY7fblfevLzy2Pm6MD0UyyS+oEchF9SzXEwnDu5Y4+Q5wz58ZQygjSr8d03wKZY76fkfK4VqpjZG5Pg3pgPNlCVfsNzvwVZ0w+WUh5HU5D1afkPd6NECi4KcWjTbqG/L3zAr0rv6T38eAgvngzP9/aX+h0AdWra0ycFsvRIIdFN+tjxn9G8Cz4eGMpLYlvcd4EsBiaZajM41WC045wKvwIesFENu2RaejorOahuIt4Hk3GgoS/99hi9DWVEGISs6J/NwVUyFIvfmZPxi2PMdgW02VIQCD7ZDlc5ZzAk7El9dwcB4D3r2CvxZCKoUBvaOEaoTZ12n/kBvcScZUTI=
