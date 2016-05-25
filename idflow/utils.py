@@ -1,4 +1,5 @@
 """
+idflow.Utils
 """
 # coding=utf-8
 
@@ -8,13 +9,16 @@ from subprocess import check_output, CalledProcessError
 import cpuinfo
 import psutil
 
+
 class Utils:
     """
+    Utils
     """
 
     @staticmethod
     def get_branch():
         """
+        Returns the current code branch
         """
         if os.getenv('GIT_BRANCH'):
             # Travis
@@ -32,6 +36,7 @@ class Utils:
     @staticmethod
     def get_version():
         """
+        Returns the current code version
         """
         try:
             return check_output(
@@ -54,9 +59,11 @@ class Utils:
         print("  Processor:\t{0}".format(info['brand']))
         print("  System   :\t{0}".format(platform.system()))
         kernel_info = platform.uname()
-        print("  Kernel   :\t{0} {1}".format(kernel_info.release, kernel_info.version))
+        print("  Kernel   :\t{0} {1}".format(kernel_info.release,
+                                             kernel_info.version))
         print("  CPU Usage:\t{0}%".format(psutil.cpu_percent()))
         memory_info = psutil.virtual_memory()
-        print("  RAM Usage:\t{0}% of {1:.2f} GB".format(memory_info.percent, memory_info.total / 1024 / 1024 / 1024))
+        print("  RAM Usage:\t{0}% of {1:.2f} GB".format(
+            memory_info.percent, memory_info.total / 1073741824))
         print("-------------------------------------------")
         print()
