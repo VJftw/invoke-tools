@@ -4,11 +4,12 @@ See:
 https://packaging.python.org/en/latest/distributing.html
 https://github.com/pypa/sampleproject
 """
+from os import path
+from subprocess import check_output
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
+from setuptools import setup
 # To use a consistent encoding
 from codecs import open
-from os import path
 
 here = path.abspath(path.dirname(__file__))
 
@@ -16,10 +17,14 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+version = check_output('git tag'.split(' ')).decode('utf-8').split(
+    '\n')[-1].strip()
+print(version)
+
 setup(
     name='invoke-docker-flow',
 
-    version='0.0.1',
+    version=version,
 
     description='A small set of tools to make using Docker with the Invoke task runner easier. Also incorporates a Flow system for use with git-flow.',
     url='https://github.com/VJftw/invoke-docker-flow',
@@ -31,7 +36,7 @@ setup(
     packages=['idflow'],
     install_requires=['docker-py', 'invoke', 'psutil', 'py-cpuinfo'],
     extras_require={
-    'test': ['nose', 'coverage', 'rednose']
+        'test': ['nose', 'coverage', 'rednose']
     },
     classifiers=[
         'Development Status :: 3 - Alpha',
