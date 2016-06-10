@@ -33,7 +33,7 @@ def publish(ctx):
         tag="idflow-dev"
         Docker.build(cli, "Dockerfile.dev", tag)
 
-        cmd = "python setup.py sdist bdist_wheel"
+        cmd = "python3 setup.py sdist bdist_wheel"
         __run(
             cli,
             tag=tag,
