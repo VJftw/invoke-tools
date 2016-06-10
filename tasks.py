@@ -30,10 +30,12 @@ def publish(ctx):
         print("# Building source and wheel distribution")
         print("#")
 
+        Docker.clean(["build", "dist", "*.egg-info"])
+
         tag="idflow-dev"
         Docker.build(cli, "Dockerfile.dev", tag)
 
-        cmd = "python setup.py sdist bdist_wheel"
+        cmd = "python3 setup.py sdist bdist_wheel"
         __run(
             cli,
             tag=tag,
