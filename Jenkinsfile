@@ -6,6 +6,7 @@ node {
       sh '''
         set +x
         invoke test
+        env
       '''
     }
     publishHTML(target: [allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'coverage', reportFiles: 'index.html', reportName: 'Test Coverage Report'])
