@@ -47,6 +47,25 @@ class Utils:
                 "git rev-parse --short HEAD".split(" ")
                 ).decode('utf-8').strip()
 
+    def get_current_commit():
+        """
+        Returns the current git commit
+        """
+        pass
+
+    def get_changed_files_from(old_commit_sha, new_commit_sha):
+        """
+        Returns a list of the files changed between two commits
+        """
+        return check_output(
+            "git diff-tree --no-commit-id --name-only -r {0}..{1}".format(
+                old_commit_sha,
+                new_commit_sha
+            ).split(" ")
+            ).decode('utf-8').strip()
+
+
+
     @staticmethod
     def print_system_info():
         """
