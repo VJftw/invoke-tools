@@ -13,7 +13,7 @@ def test(ctx):
 
     cmd = "nosetests --rednose --force-color --with-coverage --cover-html --cover-html-dir=coverage --all-modules --cover-package=idflow tests/ -v"
 
-    __run(
+    Docker.run(
         cli,
         tag=tag,
         command=cmd,
@@ -36,7 +36,7 @@ def publish(ctx):
         Docker.build(cli, "Dockerfile.dev", tag)
 
         cmd = "python3 setup.py sdist bdist_wheel"
-        __run(
+        Docker.run(
             cli,
             tag=tag,
             command=cmd,
@@ -54,7 +54,7 @@ def publish(ctx):
             os.getenv('PYPI_USERNAME'),
             os.getenv('PYPI_PASSWORD')
         )
-        __run(
+        Docker.run(
             cli,
             tag=tag,
             command=cmd,
