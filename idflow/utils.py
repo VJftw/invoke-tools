@@ -47,11 +47,32 @@ class Utils:
                 "git rev-parse --short HEAD".split(" ")
                 ).decode('utf-8').strip()
 
-    def get_current_commit():
+    def get_current_commit_sha():
         """
         Returns the current git commit
         """
-        pass
+        return check_output(
+            "git rev-parse HEAD".split(" ")
+            ).decode('utf-8').strip()
+
+    def jenkins_last_build_sha():
+        """
+        Returns the sha of the last completed jenkins build for this project.
+        Expects JOB_URL in environment
+        """
+        job_url = os.getenv('JOB_URL')
+        job_json_url = "{0}/api/json".format(job_url)
+        response = urllib.urlopen(job_json_url)
+        job_data = json.loads(response.read())
+
+        last_completed_build_url = job_data['lastCompletedBuild']['url']
+        last_complete_build_json_url = "{0}/api/json".format(last_completed_build_url)
+
+        response = urllib.urlopen(last_complete_build_json_url)
+        last_completed_build = json.loads(response.read())
+
+        return last_completed_build[1]['lastBuiltRevision']['SHA1'] # needs testing
+
 
     def get_changed_files_from(old_commit_sha, new_commit_sha):
         """
@@ -63,8 +84,6 @@ class Utils:
                 new_commit_sha
             ).split(" ")
             ).decode('utf-8').strip()
-
-
 
     @staticmethod
     def print_system_info():

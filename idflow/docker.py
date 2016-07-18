@@ -28,6 +28,8 @@ class Docker:
             print("    {0}".format(line["stream"]), end="", flush=True)
             pass
         elif "status" in line:
+            if line["status"] == "Downloading" or line["status"] == "Extracting":
+                return
             o = line["status"]
             if "progress" in line:
                 o += " " + line["progress"]
