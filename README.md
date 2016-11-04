@@ -1,7 +1,4 @@
-Invoke Docker Flow (idflow)
+Invoke Tools (invoke_tools)
 ===========================
 
-A small set of tools to make using Docker with the Invoke task runner easier. Also incorporates a Flow system for use with git-flow.
-
-[![Travis branch](https://img.shields.io/travis/VJftw/invoke-docker-flow/master.svg?maxAge=2592000)]()
-[![Coveralls branch](https://img.shields.io/coveralls/VJftw/invoke-docker-flow/master.svg?maxAge=2592000)]()
+A set of tools to use the Invoke task runner easier in a work-flow.

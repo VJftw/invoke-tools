@@ -22,18 +22,18 @@ version = check_output('git describe --abbrev=0'.split(' ')).decode(
 print(version)
 
 setup(
-    name='invoke-docker-flow',
+    name='invoke-tools',
 
     version=version,
 
-    description='A small set of tools to make using Docker with the Invoke task runner easier. Also incorporates a Flow system for use with git-flow.',
-    url='https://github.com/VJftw/invoke-docker-flow',
+    description='A set of tools to use the Invoke task runner easier in a work-flow.',
+    url='https://github.com/VJftw/invoke-tools',
     author='VJ Patel',
     author_email='vj@vjpatel.me',
     license='MIT',
     zip_safe=False,
 
-    packages=['idflow'],
+    packages=['invoke_tools'],
     install_requires=['docker-py', 'invoke', 'psutil', 'py-cpuinfo'],
     extras_require={
         'test': ['nose', 'coverage', 'rednose']
@@ -54,5 +54,5 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
 
-    keywords='invoke docker flow'
+    keywords='invoke tools'
 )
