@@ -3,15 +3,15 @@ from docker import Client
 from idflow import Utils, Docker
 import os
 
-
 cli = Client(base_url='unix://var/run/docker.sock', timeout=600)
+
 
 @task
 def test(ctx):
-    tag="idflow-dev"
+    tag = "idflow-dev"
     Docker.build(cli, "Dockerfile.dev", tag)
 
-    cmd = "nosetests --rednose --force-color --with-coverage --cover-html --cover-html-dir=coverage --all-modules --cover-package=idflow tests/ -v"
+    cmd = "nosetests --rednose --force-color --with-coverage --cover-html --cover-html-dir=coverage --all-modules --cover-package=invoke_tools tests/ -v"
 
     Docker.run(
         cli,
@@ -19,9 +19,10 @@ def test(ctx):
         command=cmd,
         volumes=[
             "{0}:/app".format(os.getcwd())
-            ],
+        ],
         working_dir="/app"
     )
+
 
 @task
 def publish(ctx):
@@ -32,7 +33,7 @@ def publish(ctx):
 
         Docker.clean(cli, ["build", "dist", "*.egg-info"])
 
-        tag="idflow-dev"
+        tag = "idflow-dev"
         Docker.build(cli, "Dockerfile.dev", tag)
 
         cmd = "python3 setup.py sdist bdist_wheel"
@@ -42,7 +43,7 @@ def publish(ctx):
             command=cmd,
             volumes=[
                 "{0}:/app".format(os.getcwd())
-                ],
+            ],
             working_dir="/app"
         )
 
@@ -60,17 +61,18 @@ def publish(ctx):
             command=cmd,
             volumes=[
                 "{0}:/app".format(os.getcwd())
-                ],
+            ],
             working_dir="/app"
         )
 
+
 def __run(
-    cli,
-    tag,
-    command,
-    volumes=[],
-    working_dir="",
-    environment={}):
+        cli,
+        tag,
+        command,
+        volumes=[],
+        working_dir="",
+        environment={}):
     """
     """
     print("#")
