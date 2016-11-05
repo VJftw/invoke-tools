@@ -19,7 +19,6 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 version = check_output('git describe --abbrev=0'.split(' ')).decode(
     'utf-8').strip()
-print(version)
 
 setup(
     name='invoke-tools',
@@ -34,7 +33,7 @@ setup(
     zip_safe=False,
 
     packages=['invoke_tools'],
-    install_requires=['docker-py', 'invoke', 'psutil', 'py-cpuinfo'],
+    install_requires=['docker-py', 'invoke', 'psutil', 'py-cpuinfo', 'gitpython'],
     extras_require={
         'test': ['nose', 'coverage', 'rednose']
     },
