@@ -36,6 +36,10 @@ def test(ctx):
 @task
 def publish_coverage(ctx):
     if Utils.get_branch() == "master":
+        print("Downloading AWS CLI")
+        for line in cli.pull('garland/aws-cli-docker:latest', stream=True):
+            pass
+
         Docker.run(
             cli,
             tag="garland/aws-cli-docker:latest",
