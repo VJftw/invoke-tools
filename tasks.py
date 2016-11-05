@@ -23,6 +23,16 @@ def test(ctx):
         working_dir="/app"
     )
 
+    Docker.run(
+        cli,
+        tag=tag,
+        command="chmod -R 666 coverage",
+        volumes=[
+            "{0}:/app".format(os.getcwd())
+        ],
+        working_dir="/app"
+    )
+
 
 @task
 def publish(ctx):
@@ -64,41 +74,3 @@ def publish(ctx):
             ],
             working_dir="/app"
         )
-
-
-def __run(
-        cli,
-        tag,
-        command,
-        volumes=[],
-        working_dir="",
-        environment={}):
-    """
-    """
-    print("#")
-    print("# Running on {1}: {0}".format(command, tag))
-    print("#")
-
-    params = dict()
-    params['image'] = tag
-    params['command'] = command
-
-    if len(volumes) > 0:
-        params['volumes'] = volumes
-        params['host_config'] = cli.create_host_config(binds=volumes)
-
-    if working_dir != "":
-        params['working_dir'] = working_dir
-    if environment:
-        params['environment'] = environment
-
-    container = cli.create_container(**params)
-
-    cli.start(container.get('Id'))
-    for line in cli.attach(container=container.get('Id'), stream=True, logs=True):
-        line = line.decode('utf-8')
-        print(line, end="", flush=True)
-
-    exit_code = cli.wait(container=container.get('Id'))
-    if exit_code != 0:
-        raise Exception("Exit Code: {0}".format(exit_code))
