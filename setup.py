@@ -7,7 +7,7 @@ https://github.com/pypa/sampleproject
 from os import path
 from subprocess import check_output
 # Always prefer setuptools over distutils
-from setuptools import setup
+from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 
@@ -32,7 +32,7 @@ setup(
     license='MIT',
     zip_safe=False,
 
-    packages=['invoke_tools'],
+    packages=find_packages(),
     install_requires=['docker-py', 'invoke', 'psutil', 'py-cpuinfo', 'gitpython'],
     extras_require={
         'test': ['nose', 'coverage', 'rednose']
