@@ -8,7 +8,6 @@ node {
         invoke test
       '''
     }
-    publishHTML(target: [allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'coverage', reportFiles: 'index.html', reportName: 'Test Coverage Report'])
 
     stage 'Publish'
     withCredentials([
