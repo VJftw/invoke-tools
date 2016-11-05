@@ -11,7 +11,16 @@ def test(ctx):
     tag = "idflow-dev"
     Docker.build(cli, "Dockerfile.dev", tag)
 
-    cmd = "nosetests --rednose --force-color --with-coverage --cover-html --cover-html-dir=coverage --all-modules --cover-package=invoke_tools tests/ -v"
+    cmd = "nosetests " \
+          "--rednose " \
+          "--force-color " \
+          "--with-coverage " \
+          "--cover-html " \
+          "--cover-html-dir=coverage " \
+          "--all-modules " \
+          "--cover-package=invoke_tools " \
+          "tests/ " \
+          "-v"
 
     Docker.run(
         cli,
@@ -22,6 +31,25 @@ def test(ctx):
         ],
         working_dir="/app"
     )
+
+
+@task
+def publish_coverage(ctx):
+    if Utils.get_branch() == "master":
+        Docker.run(
+            cli,
+            tag="garland/aws-cli-docker:latest",
+            command='aws s3 cp coverage/. s3://vjpatel.me/projects/invoke-tools/coverage/ --recursive --cache-control max-age=120',
+            volumes=[
+                 "{0}:/app".format(os.getcwd())
+            ],
+            working_dir="/app",
+            environment={
+                   "AWS_ACCESS_KEY_ID": os.getenv("AWS_ACCESS_KEY_ID"),
+                   "AWS_SECRET_ACCESS_KEY": os.getenv("AWS_SECRET_ACCESS_KEY"),
+                   "AWS_DEFAULT_REGION": "eu-west-1"
+            }
+        )
 
 
 @task
