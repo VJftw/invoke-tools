@@ -2,6 +2,7 @@
 invoke_tools.vcs.git
 """
 from git import Repo
+import os
 
 
 class Git:
@@ -19,7 +20,14 @@ class Git:
         """
         :return:
         """
-        return self.repo.active_branch
+        if os.getenv('GIT_BRANCH'):  # Travis
+            branch = os.getenv('GIT_BRANCH')
+        elif os.getenv('BRANCH_NAME'):  # Jenkins 2
+            branch = os.getenv('BRANCH_NAME')
+        else:
+            branch = str(self.repo.active_branch)
+
+        return branch.replace("/", "_")
 
     def get_version(self):
         """

@@ -1,15 +1,19 @@
 from invoke import task
 from docker import Client
-from idflow import Utils, Docker
 import os
 
+from invoke_tools import lxc, vcs
+
 cli = Client(base_url='unix://var/run/docker.sock', timeout=600)
+
+git = vcs.Git()
+git.print_all()
 
 
 @task
 def test(ctx):
     tag = "idflow-dev"
-    Docker.build(cli, "Dockerfile.dev", tag)
+    lxc.Docker.build(cli, "Dockerfile.dev", tag)
 
     cmd = "nosetests " \
           "--rednose " \
@@ -22,7 +26,7 @@ def test(ctx):
           "tests/ " \
           "-v"
 
-    Docker.run(
+    lxc.Docker.run(
         cli,
         tag=tag,
         command=cmd,
@@ -35,12 +39,12 @@ def test(ctx):
 
 @task
 def publish_coverage(ctx):
-    if Utils.get_branch() == "master":
+    if git.get_branch() == "master":
         print("Downloading AWS CLI")
         for line in cli.pull('garland/aws-cli-docker:latest', stream=True):
             pass
 
-        Docker.run(
+        lxc.Docker.run(
             cli,
             tag="garland/aws-cli-docker:latest",
             command='aws s3 cp coverage/. s3://vjpatel.me/projects/invoke-tools/coverage/ --recursive --cache-control max-age=120',
@@ -58,18 +62,18 @@ def publish_coverage(ctx):
 
 @task
 def publish(ctx):
-    if Utils.get_branch() == "master":
+    if git.get_branch() == "master":
         print("#")
         print("# Building source and wheel distribution")
         print("#")
 
-        Docker.clean(cli, ["build", "dist", "*.egg-info"])
+        lxc.Docker.clean(cli, ["build", "dist", "*.egg-info"])
 
         tag = "idflow-dev"
-        Docker.build(cli, "Dockerfile.dev", tag)
+        lxc.Docker.build(cli, "Dockerfile.dev", tag)
 
         cmd = "python3 setup.py sdist bdist_wheel"
-        Docker.run(
+        lxc.Docker.run(
             cli,
             tag=tag,
             command=cmd,
@@ -87,7 +91,7 @@ def publish(ctx):
             os.getenv('PYPI_USERNAME'),
             os.getenv('PYPI_PASSWORD')
         )
-        Docker.run(
+        lxc.Docker.run(
             cli,
             tag=tag,
             command=cmd,

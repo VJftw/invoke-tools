@@ -44,6 +44,43 @@ class GitTests(unittest.TestCase):
             git = vcs.Git()
             self.assertEqual(git.get_branch(), "develop")
 
+    def test_get_travis_branch(self):
+        """
+        invoke_tools.vcs.git.get_branch: Should return the current branch on Travis
+        """
+        def se_os_getenv(var):
+            if var == 'GIT_BRANCH':
+                return 'travis'
+            return None
+        with mock.patch('invoke_tools.vcs.git.Repo',
+                        side_effect=self.__se_repo_init):
+            git = vcs.Git()
+            with mock.patch('idflow.utils.os.getenv',
+                            side_effect=se_os_getenv):
+                self.assertEqual(
+                    git.get_branch(),
+                    "travis"
+                )
+
+    def test_get_jenkins2_branch(self):
+        """
+        invoke_tools.vcs.git.get_branch: Should return the current branch on Jenkins 2
+        """
+        def se_os_getenv(var):
+            if var == 'BRANCH_NAME':
+                return 'jenkins2'
+            return None
+
+        with mock.patch('invoke_tools.vcs.git.Repo',
+                        side_effect=self.__se_repo_init):
+            git = vcs.Git()
+            with mock.patch('idflow.utils.os.getenv',
+                            side_effect=se_os_getenv):
+                self.assertEqual(
+                    git.get_branch(),
+                    "jenkins2"
+                )
+
     def test_get_version_with_tags(self):
         """
         invoke_tools.vcs.git.get_version: Should return the current version tags if set
