@@ -23,16 +23,6 @@ def test(ctx):
         working_dir="/app"
     )
 
-    Docker.run(
-        cli,
-        tag=tag,
-        command="chmod -R 666 coverage",
-        volumes=[
-            "{0}:/app".format(os.getcwd())
-        ],
-        working_dir="/app"
-    )
-
 
 @task
 def publish(ctx):
