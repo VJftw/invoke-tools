@@ -177,5 +177,7 @@ class Docker:
             Docker.__print_line(line)
 
         exit_code = cli.wait(container=container.get('Id'))
+        cli.remove_container(container.get('Id'))
+
         if exit_code != 0:
             raise Exception("Exit Code: {0}".format(exit_code))
