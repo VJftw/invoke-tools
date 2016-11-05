@@ -78,7 +78,7 @@ class Git:
                  "-------------------------------------------\n\n".format(
             self.get_branch(),
             str(self.get_version()),
-            self.get_version().summary,
+            self.repo.commit().summary,
         )
 
         print(output)
