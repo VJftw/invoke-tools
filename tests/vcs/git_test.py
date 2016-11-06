@@ -17,6 +17,7 @@ class GitTests(unittest.TestCase):
         assert search_parent_directories, True
         self.repo = mock.Mock()
         self.repo.active_branch = "develop"
+        self.repo.head.is_detached = False
         commit = mock.Mock()
         commit.__str__ = "abcdef12345sha"
         self.repo.commit = commit
@@ -44,6 +45,20 @@ class GitTests(unittest.TestCase):
             git = vcs.Git()
             self.assertEqual(git.get_branch(), "develop")
 
+    def test_get_branch_detached(self):
+        """
+        invoke_tools.vcs.git.get_branch: Should return the HEAD if the current revision is detached
+        """
+        def __se_repo(search_parent_directories=False):
+            repo = self.__se_repo_init(search_parent_directories)
+            repo.head.is_detached = True
+            return repo
+
+        with mock.patch('invoke_tools.vcs.git.Repo',
+                        side_effect=__se_repo):
+            git = vcs.Git()
+            self.assertEqual(git.get_branch(), "HEAD")
+
     def test_get_travis_branch(self):
         """
         invoke_tools.vcs.git.get_branch: Should return the current branch on Travis
@@ -52,8 +67,14 @@ class GitTests(unittest.TestCase):
             if var == 'GIT_BRANCH':
                 return 'travis'
             return None
+
+        def __se_repo(search_parent_directories=False):
+            repo = self.__se_repo_init(search_parent_directories)
+            repo.head.is_detached = True
+            return repo
+
         with mock.patch('invoke_tools.vcs.git.Repo',
-                        side_effect=self.__se_repo_init):
+                        side_effect=__se_repo):
             git = vcs.Git()
             with mock.patch('idflow.utils.os.getenv',
                             side_effect=se_os_getenv):
@@ -71,8 +92,13 @@ class GitTests(unittest.TestCase):
                 return 'jenkins2'
             return None
 
+        def __se_repo(search_parent_directories=False):
+            repo = self.__se_repo_init(search_parent_directories)
+            repo.head.is_detached = True
+            return repo
+
         with mock.patch('invoke_tools.vcs.git.Repo',
-                        side_effect=self.__se_repo_init):
+                        side_effect=__se_repo):
             git = vcs.Git()
             with mock.patch('idflow.utils.os.getenv',
                             side_effect=se_os_getenv):
