@@ -20,10 +20,13 @@ class Git:
         """
         :return:
         """
-        if os.getenv('GIT_BRANCH'):  # Travis
-            branch = os.getenv('GIT_BRANCH')
-        elif os.getenv('BRANCH_NAME'):  # Jenkins 2
-            branch = os.getenv('BRANCH_NAME')
+        if self.repo.head.is_detached:
+            if os.getenv('GIT_BRANCH'):
+                branch = os.getenv('GIT_BRANCH')
+            elif os.getenv('BRANCH_NAME'):
+                branch = os.getenv('BRANCH_NAME')
+            else:
+                branch = "HEAD"
         else:
             branch = str(self.repo.active_branch)
 
