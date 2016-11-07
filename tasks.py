@@ -12,8 +12,9 @@ git.print_all()
 
 @task
 def test(ctx):
-    tag = "idflow-dev"
-    lxc.Docker.build(cli, "Dockerfile.dev", tag)
+    tag = "invoke-tools-dev"
+    lxc.Docker.build(cli, "Dockerfiles/python-2.Dockerfile", "{0}:2".format(tag))
+    lxc.Docker.build(cli, "Dockerfiles/python-3.Dockerfile", "{0}:3".format(tag))
 
     cmd = "nosetests " \
           "--rednose " \
@@ -28,7 +29,7 @@ def test(ctx):
 
     lxc.Docker.run(
         cli,
-        tag=tag,
+        tag="{0}:2".format(tag),
         command=cmd,
         volumes=[
             "{0}:/app".format(os.getcwd())
@@ -36,53 +37,64 @@ def test(ctx):
         working_dir="/app"
     )
 
+    lxc.Docker.run(
+        cli,
+        tag="{0}:3".format(tag),
+        command=cmd,
+        volumes=[
+            "{0}:/app".format(os.getcwd())
+        ],
+        working_dir="/app"
+    )
+
+    if os.getenv("CI") and git.get_branch() == "master":
+        __publish_coverage()
+
+def __publish_coverage():
+    print("Downloading AWS CLI")
+    for line in cli.pull('garland/aws-cli-docker:latest', stream=True):
+        pass
+
+    lxc.Docker.run(
+        cli,
+        tag="garland/aws-cli-docker:latest",
+        command='aws s3 cp coverage/. s3://vjpatel.me/projects/invoke-tools/coverage/ --recursive --cache-control max-age=120',
+        volumes=[
+             "{0}:/app".format(os.getcwd())
+        ],
+        working_dir="/app",
+        environment={
+               "AWS_ACCESS_KEY_ID": os.getenv("AWS_ACCESS_KEY_ID"),
+               "AWS_SECRET_ACCESS_KEY": os.getenv("AWS_SECRET_ACCESS_KEY"),
+               "AWS_DEFAULT_REGION": "eu-west-1"
+        }
+    )
+
 
 @task
-def publish_coverage(ctx):
-    if git.get_branch() == "master":
-        print("Downloading AWS CLI")
-        for line in cli.pull('garland/aws-cli-docker:latest', stream=True):
-            pass
+def build(ctx):
+    print("#")
+    print("# Building source and wheel distribution")
+    print("#")
 
-        lxc.Docker.run(
-            cli,
-            tag="garland/aws-cli-docker:latest",
-            command='aws s3 cp coverage/. s3://vjpatel.me/projects/invoke-tools/coverage/ --recursive --cache-control max-age=120',
-            volumes=[
-                 "{0}:/app".format(os.getcwd())
-            ],
-            working_dir="/app",
-            environment={
-                   "AWS_ACCESS_KEY_ID": os.getenv("AWS_ACCESS_KEY_ID"),
-                   "AWS_SECRET_ACCESS_KEY": os.getenv("AWS_SECRET_ACCESS_KEY"),
-                   "AWS_DEFAULT_REGION": "eu-west-1"
-            }
-        )
+    lxc.Docker.clean(cli, ["build", "dist", "*.egg-info"])
 
+    lxc.Docker.build(cli, "Dockerfiles/python-3.Dockerfile", "invoke-tools-dev:3")
+
+    cmd = "python3 setup.py sdist bdist_wheel"
+    lxc.Docker.run(
+        cli,
+        tag="invoke-tools-dev:3",
+        command=cmd,
+        volumes=[
+            "{0}:/app".format(os.getcwd())
+        ],
+        working_dir="/app"
+    )
 
 @task
 def publish(ctx):
     if git.get_branch() == "master":
-        print("#")
-        print("# Building source and wheel distribution")
-        print("#")
-
-        lxc.Docker.clean(cli, ["build", "dist", "*.egg-info"])
-
-        tag = "idflow-dev"
-        lxc.Docker.build(cli, "Dockerfile.dev", tag)
-
-        cmd = "python3 setup.py sdist bdist_wheel"
-        lxc.Docker.run(
-            cli,
-            tag=tag,
-            command=cmd,
-            volumes=[
-                "{0}:/app".format(os.getcwd())
-            ],
-            working_dir="/app"
-        )
-
         print("#")
         print("# Uploading with Twine")
         print("#")
@@ -93,7 +105,7 @@ def publish(ctx):
         )
         lxc.Docker.run(
             cli,
-            tag=tag,
+            tag="invoke-tools-dev:3",
             command=cmd,
             volumes=[
                 "{0}:/app".format(os.getcwd())

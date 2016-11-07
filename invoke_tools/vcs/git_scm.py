@@ -1,5 +1,5 @@
 """
-invoke_tools.vcs.git
+invoke_tools.vcs.git_scm
 """
 from git import Repo
 import os

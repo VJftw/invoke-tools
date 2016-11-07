@@ -1,1 +1,1 @@
-from .git import Git
+from .git_scm import Git

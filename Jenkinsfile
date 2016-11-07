@@ -16,6 +16,13 @@ node {
         sh 'invoke publish_coverage'
     }
 
+    stage 'Build'
+    env.CI = "true"
+    checkout scm
+    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm', 'defaultFg': 1, 'defaultBg': 2]) {
+      sh 'invoke build'
+    }
+
     stage 'Publish'
     withCredentials([
     [
