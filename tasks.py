@@ -73,6 +73,9 @@ def __publish_coverage():
 
 @task
 def build(ctx):
+    if os.getenv("CI") and git.get_branch() != "master":
+        return
+
     print("#")
     print("# Building source and wheel distribution")
     print("#")
