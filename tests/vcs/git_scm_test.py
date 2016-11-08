@@ -1,5 +1,5 @@
 """
-tests.invoke_tools.vcs.git_test
+tests.invoke_tools.vcs.git_scm_scm_test
 """
 
 import unittest
@@ -29,39 +29,39 @@ class GitTests(unittest.TestCase):
 
     def test_init(self):
         """
-        invoke_tools.vcs.git.init: Should initialise the Git object
+        invoke_tools.vcs.git_scm.init: Should initialise the Git object
         """
-        with mock.patch('invoke_tools.vcs.git.Repo',
+        with mock.patch('invoke_tools.vcs.git_scm.Repo',
                         side_effect=self.__se_repo_init):
             git = vcs.Git()
             self.assertIsInstance(git, vcs.Git)
 
     def test_get_branch(self):
         """
-        invoke_tools.vcs.git.get_branch: Should return the current branch from the Git repository
+        invoke_tools.vcs.git_scm.get_branch: Should return the current branch from the Git repository
         """
-        with mock.patch('invoke_tools.vcs.git.Repo',
+        with mock.patch('invoke_tools.vcs.git_scm.Repo',
                         side_effect=self.__se_repo_init):
             git = vcs.Git()
             self.assertEqual(git.get_branch(), "develop")
 
     def test_get_branch_detached(self):
         """
-        invoke_tools.vcs.git.get_branch: Should return the HEAD if the current revision is detached
+        invoke_tools.vcs.git_scm.get_branch: Should return the HEAD if the current revision is detached
         """
         def __se_repo(search_parent_directories=False):
             repo = self.__se_repo_init(search_parent_directories)
             repo.head.is_detached = True
             return repo
 
-        with mock.patch('invoke_tools.vcs.git.Repo',
+        with mock.patch('invoke_tools.vcs.git_scm.Repo',
                         side_effect=__se_repo):
             git = vcs.Git()
             self.assertEqual(git.get_branch(), "HEAD")
 
     def test_get_travis_branch(self):
         """
-        invoke_tools.vcs.git.get_branch: Should return the current branch on Travis
+        invoke_tools.vcs.git_scm.get_branch: Should return the current branch on Travis
         """
         def se_os_getenv(var):
             if var == 'GIT_BRANCH':
@@ -73,7 +73,7 @@ class GitTests(unittest.TestCase):
             repo.head.is_detached = True
             return repo
 
-        with mock.patch('invoke_tools.vcs.git.Repo',
+        with mock.patch('invoke_tools.vcs.git_scm.Repo',
                         side_effect=__se_repo):
             git = vcs.Git()
             with mock.patch('idflow.utils.os.getenv',
@@ -85,7 +85,7 @@ class GitTests(unittest.TestCase):
 
     def test_get_jenkins2_branch(self):
         """
-        invoke_tools.vcs.git.get_branch: Should return the current branch on Jenkins 2
+        invoke_tools.vcs.git_scm.get_branch: Should return the current branch on Jenkins 2
         """
         def se_os_getenv(var):
             if var == 'BRANCH_NAME':
@@ -97,7 +97,7 @@ class GitTests(unittest.TestCase):
             repo.head.is_detached = True
             return repo
 
-        with mock.patch('invoke_tools.vcs.git.Repo',
+        with mock.patch('invoke_tools.vcs.git_scm.Repo',
                         side_effect=__se_repo):
             git = vcs.Git()
             with mock.patch('idflow.utils.os.getenv',
@@ -109,7 +109,7 @@ class GitTests(unittest.TestCase):
 
     def test_get_version_with_tags(self):
         """
-        invoke_tools.vcs.git.get_version: Should return the current version tags if set
+        invoke_tools.vcs.git_scm.get_version: Should return the current version tags if set
         """
         tag1 = mock.Mock()
         tag2 = mock.Mock()
@@ -125,23 +125,23 @@ class GitTests(unittest.TestCase):
             ]
             return repo
 
-        with mock.patch('invoke_tools.vcs.git.Repo',
+        with mock.patch('invoke_tools.vcs.git_scm.Repo',
                         side_effect=__se_repo):
             git = vcs.Git()
             self.assertEqual(git.get_version(), tag2)
 
     def test_get_version(self):
         """
-        invoke_tools.vcs.git.get_version: Should return the current version
+        invoke_tools.vcs.git_scm.get_version: Should return the current version
         """
-        with mock.patch('invoke_tools.vcs.git.Repo',
+        with mock.patch('invoke_tools.vcs.git_scm.Repo',
                         side_effect=self.__se_repo_init):
             git = vcs.Git()
             self.assertEqual(git.get_version(), self.repo.commit())
 
     def test_get_changed_files(self):
         """
-        invoke_tools.vcs.git.get_changed_files: Should return an array of all the changed files
+        invoke_tools.vcs.git_scm.get_changed_files: Should return an array of all the changed files
         """
         def __se_commit(sha=None):
             second_commit = mock.Mock()
@@ -166,7 +166,7 @@ class GitTests(unittest.TestCase):
             repo.commit = mock.Mock(side_effect=__se_commit)
             return repo
 
-        with mock.patch('invoke_tools.vcs.git.Repo',
+        with mock.patch('invoke_tools.vcs.git_scm.Repo',
                         side_effect=__se_repo):
             git = vcs.Git()
 
@@ -178,7 +178,7 @@ class GitTests(unittest.TestCase):
 
     def test_get_changed_files_with_exclusions(self):
         """
-        invoke_tools.vcs.git.get_changed_files: Should return an array of all the changed files without exclusions
+        invoke_tools.vcs.git_scm.get_changed_files: Should return an array of all the changed files without exclusions
         """
         def __se_commit(sha=None):
             second_commit = mock.Mock()
@@ -203,7 +203,7 @@ class GitTests(unittest.TestCase):
             repo.commit = mock.Mock(side_effect=__se_commit)
             return repo
 
-        with mock.patch('invoke_tools.vcs.git.Repo',
+        with mock.patch('invoke_tools.vcs.git_scm.Repo',
                         side_effect=__se_repo):
             git = vcs.Git()
 

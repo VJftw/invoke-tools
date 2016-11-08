@@ -2,9 +2,7 @@ node {
     stage 'Unit Tests'
     env.CI = "true"
     checkout scm
-    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm', 'defaultFg': 1, 'defaultBg': 2]) {
-      sh 'invoke test'
-    }
+
     withCredentials([
         [
             $class: 'AmazonWebServicesCredentialsBinding',
@@ -13,7 +11,16 @@ node {
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]
     ]) {
-        sh 'invoke publish_coverage'
+        wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm', 'defaultFg': 1, 'defaultBg': 2]) {
+            sh 'invoke test'
+        }
+    }
+
+    stage 'Build'
+    env.CI = "true"
+    checkout scm
+    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm', 'defaultFg': 1, 'defaultBg': 2]) {
+      sh 'invoke build'
     }
 
     stage 'Publish'
