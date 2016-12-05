@@ -3,3 +3,4 @@ py-cpuinfo>=0.2.3
 docker-py>=1.8.1
 psutil>=4.2.0
 gitpython>=2.1.0
+requests>=2.0.0

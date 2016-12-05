@@ -1,5 +1,5 @@
 """
-tests.invoke_tools.vcs.git_scm_scm_test
+tests.invoke_tools.vcs.git_scm_test
 """
 
 import unittest
