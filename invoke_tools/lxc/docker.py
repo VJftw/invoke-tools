@@ -23,22 +23,23 @@ class Docker:
             return
         try:
             line = json.loads(line)
-        except:
-            print("    {0}".format(line), flush=True)
-            return
 
-        if "stream" in line:
-            print("    {0}".format(line["stream"]), end="", flush=True)
+            if "stream" in line:
+                line = line["stream"]
+                pass
+            elif "status" in line:
+                if line["status"] == "Downloading" or line["status"] == "Extracting":
+                    return
+                o = line["status"]
+                if "progress" in line:
+                    o += " " + line["progress"]
+                if "id" in line:
+                    o = line["id"] + " " + o
+                line = o
+        except:
             pass
-        elif "status" in line:
-            if line["status"] == "Downloading" or line["status"] == "Extracting":
-                return
-            o = line["status"]
-            if "progress" in line:
-                o += " " + line["progress"]
-            if "id" in line:
-                o = line["id"] + " " + o
-            print("    {0}".format(o), flush=True)
+
+        print(line, end="", flush=True)
 
     @staticmethod
     def build(cli, dockerfile, tag):
@@ -146,7 +147,9 @@ class Docker:
             command,
             volumes=None,
             working_dir="",
-            environment=None):
+            environment=None,
+            links=None,
+            detach=False):
         """
         """
         if environment is None:
@@ -163,16 +166,22 @@ class Docker:
 
         if len(volumes) > 0:
             params['volumes'] = volumes
-            params['host_config'] = cli.create_host_config(binds=volumes)
+            params['host_config'] = cli.create_host_config(binds=volumes, links=links)
 
         if working_dir != "":
             params['working_dir'] = working_dir
         if environment:
             params['environment'] = environment
 
+        if links:
+            params['host_config'] = cli.create_host_config(binds=volumes, links=links)
+
         container = cli.create_container(**params)
 
         cli.start(container.get('Id'))
+        if detach:
+            return container
+
         for line in cli.attach(container=container.get('Id'), stream=True, logs=True):
             Docker.__print_line(line)
 
