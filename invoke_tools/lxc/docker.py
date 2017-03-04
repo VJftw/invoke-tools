@@ -149,7 +149,8 @@ class Docker:
             working_dir="",
             environment=None,
             links=None,
-            detach=False):
+            detach=False,
+            privileged=False):
         """
         """
         if environment is None:
@@ -166,7 +167,7 @@ class Docker:
 
         if len(volumes) > 0:
             params['volumes'] = volumes
-            params['host_config'] = cli.create_host_config(binds=volumes, links=links)
+            params['host_config'] = cli.create_host_config(binds=volumes, links=links, privileged=privileged)
 
         if working_dir != "":
             params['working_dir'] = working_dir
@@ -174,7 +175,10 @@ class Docker:
             params['environment'] = environment
 
         if links:
-            params['host_config'] = cli.create_host_config(binds=volumes, links=links)
+            params['host_config'] = cli.create_host_config(binds=volumes, links=links, privileged=privileged)
+
+        if privileged:
+            params['host_config'] = cli.create_host_config(binds=volumes, links=links, privileged=privileged)
 
         container = cli.create_container(**params)
 
