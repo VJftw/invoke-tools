@@ -28,18 +28,28 @@ class Docker:
                 line = line["stream"]
                 pass
             elif "status" in line:
-                if line["status"] == "Downloading" or line["status"] == "Extracting":
-                    return
                 o = line["status"]
                 if "progress" in line:
-                    o += " " + line["progress"]
+                    o += "{0}".format(line["progress"])
                 if "id" in line:
-                    o = line["id"] + " " + o
-                line = o
+                    o = "{0} {1}".format(line["id"], o)
+                if line["status"] == "Download complete" or "Pulling" in line["status"] or "Digest" in line["status"] or "Image" in line["status"] or "image" in line["status"]:
+                    line = " {0}{1}\n".format(o, " " * 80)
+                else:
+                    line = " {0}\r".format(o)
         except:
             pass
 
         print(line, end="", flush=True)
+
+    @staticmethod
+    def pull(cli, image):
+        print("#")
+        print("# Pulling Docker image: {0}".format(image))
+        print("#")
+
+        for line in cli.pull(image, stream=True):
+            Docker.__print_line(line)
 
     @staticmethod
     def build(cli, dockerfile, tag):
