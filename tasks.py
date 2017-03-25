@@ -1,32 +1,33 @@
 from invoke import task
-from docker import Client
+from docker import APIClient
 import os
 
 from invoke_tools import lxc, vcs, ci
 
-cli = Client(base_url='unix://var/run/docker.sock', timeout=600)
+cli = APIClient(base_url='unix://var/run/docker.sock', timeout=600)
 
 git = vcs.Git()
 git.print_all()
 
 @task
 def test(ctx):
-    jenkins = ci.Jenkins("https://ci.vjpatel.me", "invoke-tools", git)
-
-    changed_files = git.get_changed_files(
-            jenkins.get_last_successful_build_sha(),
-            git.get_version(),
-            [
-                "setup.py",
-                "tasks.py"
-             ]
-    )
-
-    if len(changed_files) <= 0:
-        print("No src or test files changed since last build")
-        return
+    # jenkins = ci.Jenkins("https://ci.vjpatel.me", "invoke-tools", git)
+    #
+    # changed_files = git.get_changed_files(
+    #         jenkins.get_last_successful_build_sha(),
+    #         git.get_version(),
+    #         [
+    #             "setup.py",
+    #             "tasks.py"
+    #          ]
+    # )
+    #
+    # if len(changed_files) <= 0:
+    #     print("No src or test files changed since last build")
+    #     return
 
     tag = "invoke-tools-dev"
+
     lxc.Docker.build(cli, "Dockerfiles/python-2.Dockerfile", "{0}:2".format(tag))
     lxc.Docker.build(cli, "Dockerfiles/python-3.Dockerfile", "{0}:3".format(tag))
 

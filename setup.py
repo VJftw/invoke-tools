@@ -33,7 +33,7 @@ setup(
     zip_safe=False,
 
     packages=find_packages(),
-    install_requires=['docker-py', 'invoke', 'psutil', 'py-cpuinfo', 'gitpython', 'requests'],
+    install_requires=['docker', 'invoke', 'psutil', 'py-cpuinfo', 'gitpython', 'requests'],
     extras_require={
         'test': ['nose', 'coverage', 'rednose']
     },
