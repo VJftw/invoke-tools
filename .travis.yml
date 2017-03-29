@@ -1,23 +1,23 @@
-language: python
-python:
-    - 3.5
-    - 2.7
+sudo: required
+services:
+- docker
+addons:
+  apt:
+    packages:
+    - python3
+    - python3-pip
 before_install:
-    - pip install --upgrade pip
+  - sudo pip3 install --upgrade pip
 install:
-    - pip install -r requirements.txt
-    - pip install -r tests/requirements.txt
+  - pip install -r requirements.txt
+  - pip install -r tests/requirements.txt
+  - pip install -e .
 script:
-    - "./scripts/run_tests.sh"
-after_success:
-    - coveralls
-    - "./scripts/travis_deploy.sh"
+  - invoke test
 
-branches:
-    except:
-        - "/^\\d+\\.\\d+\\.\\d+/"
 env:
-    global:
-        - secure: Lm+Z5fdILpn6IQX/NeVLTFoHjFTg5zdNU2ki7ACoqxlLcOmIeaESo4WvvfCmSqJq7XhwHPIDvv3aznuveULaknK7Y1XinDBdBikgWKyNrPv7AjS3ltxo8VOhl8mkWRPZPU0ZXFuFZeYglkD3eudN93aZF3ddDqKLCjhGd52dzsbkBIEVlResGjHp1rfbEKxAb3qX34j1TYMfCdzlt0FUifEiaoKL91YrRxq0PfYfNEvEBSSm2EkCJCUleaIDB2SFiBHoj6dCPwRUxmXFliHyH3YsCuGxBhGJT+ATNh+FNmUd6H3uL9w69D5LppiEGdCy5yvF+SfgKFiAUOOvrG2RJAQ+aY7fblfevLzy2Pm6MD0UyyS+oEchF9SzXEwnDu5Y4+Q5wz58ZQygjSr8d03wKZY76fkfK4VqpjZG5Pg3pgPNlCVfsNzvwVZ0w+WUh5HU5D1afkPd6NECi4KcWjTbqG/L3zAr0rv6T38eAgvngzP9/aX+h0AdWra0ycFsvRIIdFN+tjxn9G8Cz4eGMpLYlvcd4EsBiaZajM41WC045wKvwIesFENu2RaejorOahuIt4Hk3GgoS/99hi9DWVEGISs6J/NwVUyFIvfmZPxi2PMdgW02VIQCD7ZDlc5ZzAk7El9dwcB4D3r2CvxZCKoUBvaOEaoTZ12n/kBvcScZUTI=
-        - secure: wuZpOV7GGsQqMiaEmBZdqy7EGoRknV8K/OuxvS/SHfZpMTBr6dPi+C6Anr/onSE30ibLARkG3j9YOvOoJaRnw4vkQkHnE6L7C7J5Bh/m812j1aiNqf/6nLME8wN63hPw/eILfMqquQivWf3thC/YT+6W6vJYMQ220mcAcE6YeA5wFC4YbAAQ+IYkMovu7qdzQZENshNjHoA4Eh8CI3Lgm8brK+wG8Yb4J9uqJmGc20lSmC86WUVWsz3dnPROU8GeBvwgFMLqm1n1/wT0rfGtlzfbenUGa2vL42C1go+7c4F/Ajex8kRWcIrFdNpal8b6Qeo8nXCVXaU1x9eMLTft7D+7jy+bZybaww2FEXRtbobhSaXTI19aHQtKgh4UGoM175RcSaCWlTg+TvY1yyyFWm4Qio88I3aety7p3u9ueG8cJSh7TVCZMcZveYS5Z7sIH3lA1Qiz/UUA2AefH0Au8yAUAhxFQs4ayXoYOvaJcI6fDu3gCoer3MoIiDjVd8W+chWoCV+3J+KKo6KYOfLhcNIg3ywm0mgLbJcI+B/DQCkurVZo9Sb1TdrX6AG6H+4mWmeaDwdOIqf/Z933ymZFMWH8n6U6hv0/FioNfJVy41mJu7G+/iEnptmHw5uLjK5o8wA0tCPDqXQOwXLKhhTG/CL5Buf7o3n4cJVOYI9UFTA=
-        - secure: a99lVai3x/+b/mcfOfdqmLOkI6yZdbTr+5t1eqBl6td0Ov0TnbR/25xeOeTOgwgKB080rtjAp5HBAjcoRoX+Ba9hCygJYqZn4LlrhepTKAChCWSNVFsUFAxu4EG0MxmC9jP5RGNQlOc5cFEafbSbq35mQjmcAppHb6BIXfk7TG8PwNu+9bEWA8CmAMTCS+sV6o00jiM5rhoQHG7r/G8m5JNI1S5D/vvDvKq71qVyaZ1Y+2HJ61S7N2hxqTINuPFVQgRVHLQQ2n2h9POjgpk0qXQ04D1ixLmdQ5CLZXvsiXZlODKiQT1Ry4Es8wCj72D+9ygEb33D9Q5varOaATQrbh08lfibkY6PZ+phGzIfMvjH4kEkksSKsumzgWtclueK4Rvkhlnp+1BQp+o/vVQF7rGiX0B0ofADeyHCGXbiVxUkJ/h4bx/gdI/NN1CIbw5JgTJAf1V9SnTeaJ/kAOtuZrvvrfiVVq148mOjiKbIJcHbgdYuN1SBL21eBRmNNmP6HJOlkP7auyoxV2EikBr+2bgKHhaTt4Ejw5UHoid9lZLH2VqtYNQc0sDvxEf2H1AswyHa4ADJ3DvqFAU8YpbYoSPLxr1KmitiDMohAb+UbLCOLmUb+FPmziChBhFF4RvyN1xI38uUZXyV3RCU3VbeTysutFq4kaJqOzX7LmDTGSc=
+  global:
+    # AWS_ACCESS_KEY_ID
+    - secure: W74heVJlSkSJrYY4YBBcv1bKZrK7f0FGGK0IXZ3iqt3VYuWiDV8Bn9mitqAlYsGT+qiPTj/zeQsxJk19NDqBWUFr1l/pDKcPUyUIdORKV19uvvKZVqwp+bR0fbugA33rodmihuwYLZE1tHEFziZIVzlyRHP3x0zj8I1cpRsCjw1Uq8aRtJCXPoUOH/JKKpFSTWHFJMhJfCJZDEqWM8s7Vko/PVCw97FLW/qT/+MyQgQ0JqPru/9sjlGsSy2pIlsWE4Xs0qY9/Fr/1j4WpHysU5f729TrsoAlZuRbH2A3tWjpPrj6HAoPn0GmmJK7Ju2t62kBmlpdm/jonVLgiA1740s8V23Ru9X9f4GiSZRDsZumn69p9vdSvPHK9So8jzmsFbTKqb7yNABwqXdyZLFiiim75Q09pJglb8gifWJRGQXe7h2e1FYsSeEQ5gx6zTiuoDmc760PZjhQJ6EqLTlhIf9hVrt+gqbb9/QMkQAIRvi3Ru4gGNMIZVWYb/noWlrfx1pa99DY6vYXsvxmFrXiKJM3KJDtQyU+/ybE4lHtFkBrlwjZ59HS5yL0gGberVzgW3k37Dqktx+ziiP2C66wOTKqYm2Ob29Or3reO5fATs+ZcsEZeruzDTmJN2p2pbqZLQ6LRqNRKNAYfJeOk5Eg5UHu6jeZt5KYtAhSrLHPxi8=
+    # AWS_SECRET_ACCESS_KEY
+    - secure: 04PQIHj5GfFj0fXHTWuz5DXk5Ac3ATRYKnFDSb66NC2czIvex5RqWjSUXG7UJZ/ltUo8xlxAz1Y7/30HzJ4q7uk0wmjbcGn+QyAOpIwYbttTMWvI6d3cP+ihRuqoDH3vphpiIUwWEfkuw2f27e5HV8xdiyMMwbSv69y+KbxVvjeYMcSbEvyWmctQMK+Ihb9vgFiNZs/sZvu/mO6f3hVq4fk3FmB5UA+GEHz6mqsXAtKR0DLV7OD0L+54q9hVECRSe1vGKqOAWY8uSz8Lln5kI+eus332AbzAmJ4i/Wko6zeHN+8blR1c+PScGIAhN450Gv0m5x1NheKYEgc1HXHucr2/wavXlDvgsw/J+GMxAWnPo/bZY5oVltJiuwjx+uVA1Y0EFbTwn6XfMT84bZpTWUfydLP37yx3XfegjYVc1h7UlVABowxkH9SOwnkSqM+Co2g4I1uLC2iYx/moJMOf/PVBbnWlrEir8p70zjVKN71ABFYb0qcE/cFz1B6CVTJcLhxJ3K49yJBZgQ29sbhLGfE7RA8+OWGG5uY+fpQoPgRqSn/vcxgqPgUfhuk0txX47B8VwBTerzG1ehQkr2ib94q4grmN1pG+D4nHTkZMEU7LfxQRLih+/XvPXRsuxh0A4I5OYouERMxoiiAG7H3L1JBG2kaIMUqSk1FQR6gy6Bo=
