@@ -4,7 +4,7 @@ import os
 
 from invoke_tools import lxc, vcs, ci
 
-cli = APIClient(base_url='unix://var/run/docker.sock', timeout=600)
+cli = APIClient(base_url='unix://var/run/docker.sock', timeout=600, version="auto")
 
 git = vcs.Git()
 git.print_all()

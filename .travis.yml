@@ -9,9 +9,9 @@ addons:
 before_install:
   - sudo pip3 install --upgrade pip
 install:
-  - pip install -r requirements.txt
-  - pip install -r tests/requirements.txt
-  - pip install -e .
+  - pip3 install -r requirements.txt
+  - pip3 install -r tests/requirements.txt
+  - pip3 install -e .
 script:
   - invoke test
 
