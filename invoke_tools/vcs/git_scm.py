@@ -25,6 +25,8 @@ class Git:
                 branch = os.getenv('GIT_BRANCH')
             elif os.getenv('BRANCH_NAME'):
                 branch = os.getenv('BRANCH_NAME')
+            elif os.getenv('TRAVIS_BRANCH'):
+                branch = os.getenv('TRAVIS_BRANCH')
             else:
                 branch = "HEAD"
         else:

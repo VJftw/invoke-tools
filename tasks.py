@@ -114,9 +114,9 @@ def build(ctx):
 
 @task
 def publish(ctx):
-    if git.get_branch() == "master":
+    if os.getenv("TRAVIS_TAG"):
         print("#")
-        print("# Uploading with Twine")
+        print("# Uploading {0} with Twine".format(os.getenv("TRAVIS_TAG")))
         print("#")
 
         cmd = "twine upload --username {0} --password {1} dist/*".format(
